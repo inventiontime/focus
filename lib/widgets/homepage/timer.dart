@@ -32,6 +32,7 @@ class _TimerState extends State<Timer> {
   }
 
   void _continue() {
+    appData.setNumber = 1;
     Navigator.pushNamed(context, 'worktimer');
     Storage.storage.writePreferences();
   }

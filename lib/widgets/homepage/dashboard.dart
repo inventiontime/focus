@@ -22,6 +22,7 @@ class _DashboardState extends State<Dashboard> {
     if(page > 0)
       setState(() { page--; });
   }
+
   @override
   Widget build(BuildContext context) {
     return BackgroundBox(
