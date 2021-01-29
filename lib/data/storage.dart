@@ -1,104 +1,77 @@
-import 'dart:io';
-
-import 'package:dart_app_data/dart_app_data.dart' as path;
 import 'package:focus/data/appdata.dart';
+import 'package:focus/data/types.dart';
+import 'package:focus/functions.dart';
+import 'package:hive/hive.dart';
+import 'package:dart_app_data/dart_app_data.dart' as path;
 
 class Storage {
+  static Storage storage = Storage();
+
   final myData = path.AppData.findOrCreate('Focus');
 
-  static Storage storage = Storage();
-  final String pattern = '//';
-
-  Future<String> get _localPath async {
+  Future<String> get localPath async {
     var x = myData.directory;
     return x.path;
   }
 
-  /////////////////
+  Box<Preferences> preferencesBox;
+  Box<Tag> tagBox;
+  Box<Session> sessionBox;
 
-  Future<File> get _tagsFile async {
-    final path = await _localPath;
-    return File('$path/tags.txt');
+  read() async {
+    Hive.init(await localPath);
+
+    Hive.registerAdapter(PreferencesAdapter());
+    Hive.registerAdapter(TagAdapter());
+    Hive.registerAdapter(SessionAdapter());
+
+    preferencesBox = await Hive.openBox<Preferences>('preferencesBox');
+    tagBox = await Hive.openBox<Tag>('tagBox');
+    sessionBox = await Hive.openBox<Session>('sessionBox');
+
+    if (preferencesBox.isEmpty)
+      preferencesBox.put(0, new Preferences());
+
+    if (tagBox.isEmpty)
+      tagBox.addAll(defaultTags);
   }
 
-  void readTags() async {
-    try {
-      final file = await _tagsFile;
-      List<String> contents = (await file.readAsString()).split(pattern);
-      appData.tagNumber = int.parse(contents[0]);
-      appData.tags = contents.sublist(1, (appData.tagNumber+1));
-      appData.tagTime = contents.sublist(appData.tagNumber+1).map(int.parse).toList();
-    } catch (e) {}
+  void writePreferences() {
+    preferencesBox.putAt(0, appData.preferences);
   }
 
-  Future<File> writeTags() async {
-    final file = await _tagsFile;
-    String data = "";
-
-    data += appData.tagNumber.toString();
-
-    appData.tags.forEach((String E){
-      data += pattern;
-      data += E;
-    });
-
-    appData.tagTime.forEach((int E){
-      data += pattern;
-      data += E.toString();
-    });
-
-    return file.writeAsString(data);
+  int nextTagId() {
+    int id = appData.preferences.nextTagId;
+    appData.preferences.nextTagId++;
+    preferencesBox.putAt(0, appData.preferences);
+    return id;
   }
 
-  /////////////////
-
-  Future<File> get _dataFile async {
-    final path = await _localPath;
-    return File('$path/data.txt');
+  void addTag(String name) {
+    tagBox.add(new Tag(
+        id: nextTagId(),
+        name: name
+    ));
   }
 
-  void readData() async {
-    try {
-      final file = await _dataFile;
-      List<String> contents = (await file.readAsString()).split(pattern);
-
-      appData.workTime = int.parse(contents[0]);
-      appData.breakTime = int.parse(contents[1]);
-      appData.totalWorkTime = int.parse(contents[2]);
-      appData.productivity = double.parse(contents[3]);
-      appData.workAlarm = int.parse(contents[4]);
-      appData.breakAlarm = int.parse(contents[5]);
-    } catch (e) {}
+  void renameTag(int index, String name) {
+    appData.tags[index].name = name;
+    tagBox.putAt(index, appData.tags[index]);
   }
 
-  Future<File> writeData() async {
-    final file = await _dataFile;
-    String data = "";
-
-    data += appData.workTime.toString();
-    data += pattern;
-    data += appData.breakTime.toString();
-    data += pattern;
-    data += appData.totalWorkTime.toString();
-    data += pattern;
-    data += appData.productivity.toString();
-    data += pattern;
-    data += appData.workAlarm.toString();
-    data += pattern;
-    data += appData.breakAlarm.toString();
-
-    return file.writeAsString(data);
+  void deleteTag(int index) {
+    tagBox.deleteAt(index);
   }
 
-  /////////////////
-
-  void read() {
-    readData();
-    readTags();
+  void addSession(int time) {
+    sessionBox.add(Session(time: time, day: day(), hour: hour()));
   }
 
-  void write() {
-    writeData();
-    writeTags();
+  void addSessionDetails(int tagId, int productivity) {
+    appData.sessions.last.details = true;
+    appData.sessions.last.tagId = tagId;
+    appData.sessions.last.productivity = productivity;
+
+    sessionBox.putAt(sessionBox.length-1, appData.sessions.last);
   }
 }

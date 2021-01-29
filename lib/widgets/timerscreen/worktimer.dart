@@ -22,7 +22,7 @@ class _WorkTimerState extends State<WorkTimer> with TickerProviderStateMixin {
     controller = AnimationController(
       vsync: this,
         //TODO: change to minutes
-      duration: Duration(seconds: appData.workTime),
+      duration: Duration(seconds: appData.preferences.workTime),
       reverseDuration: Duration(seconds: 1)
     );
 
@@ -31,11 +31,9 @@ class _WorkTimerState extends State<WorkTimer> with TickerProviderStateMixin {
     controller.reverse().whenComplete(() => {
       controller.forward(from: 0),
       controller.forward().whenComplete(() => {
-        appData.totalWorkTime += appData.workTime,
-        Storage.storage.write(),
+        Storage.storage.addSession(appData.preferences.workTime),
 
         audio.playWorkAlarm(),
-
         Navigator.pushNamed(context, 'breaktimer'),
       })
     });

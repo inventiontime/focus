@@ -24,7 +24,7 @@ class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
     controller = AnimationController(
         vsync: this,
         //TODO: change to minutes
-        duration: Duration(seconds: appData.breakTime),
+        duration: Duration(seconds: appData.preferences.breakTime),
         reverseDuration: Duration(seconds: 1)
     );
 
@@ -44,9 +44,7 @@ class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
 
   void onBreakComplete() {
     appData.setNumber++;
-    appData.productivity = (appData.workTime * _currentSliderValue + (appData.totalWorkTime - appData.workTime) * appData.productivity) / appData.totalWorkTime;
-    if(_value != null) appData.tagTime[_value] += appData.workTime;
-    Storage.storage.write();
+    if(_value != null) Storage.storage.addSessionDetails(_value, _currentSliderValue.round());
   }
 
   void popupFunction(TimerScreenOptions result) {
@@ -123,7 +121,7 @@ class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
                       (int index) {
                         return ChoiceChip(
                           selectedColor: red,
-                          label: Text(appData.tags[index]),
+                          label: Text(appData.tags[index].name),
                           labelStyle: Theme.of(context).textTheme.bodyText2,
                           padding: EdgeInsets.all(10),
                           selected: _value == index,

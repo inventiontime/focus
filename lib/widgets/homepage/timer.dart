@@ -12,20 +12,20 @@ class Timer extends StatefulWidget {
 class _TimerState extends State<Timer> {
   void _plusPressed(bool _workTimeSelected) {
     setState(() {
-      if(_workTimeSelected) appData.workTime += 5;
-      else appData.breakTime += 1;
+      if(_workTimeSelected) appData.preferences.workTime += 5;
+      else appData.preferences.breakTime += 1;
     });
   }
 
   void _minusPressed(bool _workTimeSelected) {
     setState(() {
       if(_workTimeSelected) {
-        appData.workTime -= 5;
-        if(appData.workTime < 5) appData.workTime = 5;
+        appData.preferences.workTime -= 5;
+        if(appData.preferences.workTime < 5) appData.preferences.workTime = 5;
       }
       else {
-        appData.breakTime -= 1;
-        if(appData.breakTime < 1) appData.breakTime = 1;
+        appData.preferences.breakTime -= 1;
+        if(appData.preferences.breakTime < 1) appData.preferences.breakTime = 1;
       }
     });
   }
@@ -49,7 +49,7 @@ class _TimerState extends State<Timer> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text('work time', style: Theme.of(context).textTheme.bodyText1),
-                          RowText(appData.workTime.toString(), 'min', style1: Theme.of(context).textTheme.headline2.copyWith(color: red), style2: Theme.of(context).textTheme.bodyText1.copyWith(color: red)),
+                          RowText(appData.preferences.workTime.toString(), 'min', style1: Theme.of(context).textTheme.headline2.copyWith(color: red), style2: Theme.of(context).textTheme.bodyText1.copyWith(color: red)),
                           Divider(indent: 30, endIndent: 30),
                           Row (
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,7 +69,7 @@ class _TimerState extends State<Timer> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text('break time', style: Theme.of(context).textTheme.bodyText1),
-                          RowText(appData.breakTime.toString(), 'min', style1: Theme.of(context).textTheme.headline2.copyWith(color: blue), style2: Theme.of(context).textTheme.bodyText1.copyWith(color: blue)),
+                          RowText(appData.preferences.breakTime.toString(), 'min', style1: Theme.of(context).textTheme.headline2.copyWith(color: blue), style2: Theme.of(context).textTheme.bodyText1.copyWith(color: blue)),
                           Divider(indent: 30, endIndent: 30),
                           Row (
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

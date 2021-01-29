@@ -17,3 +17,11 @@ Color lighten(Color color, [double amount = .1]) {
 
   return hslLight.toColor();
 }
+
+int day() {
+  return DateTime.now().difference(DateTime(1)).inDays;
+}
+
+int hour() {
+  return DateTime.now().hour;
+}

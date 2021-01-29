@@ -6,16 +6,16 @@ import 'package:focus/widgets/stopsoundoverlay.dart';
 class Audio {
   static final Audio _audio = new Audio._internal();
 
-  var audioPlayer = new AudioPlayer(id: 0, debug: true);
+  var audioPlayer = new AudioPlayer(id: 0);
 
   void playWorkAlarm() async {
-    await audioPlayer.load(alarmPaths[appData.workAlarm]);
+    await audioPlayer.load(alarmPaths[appData.preferences.workAlarm]);
     audioPlayer.play();
     StopSoundOverlayLoader.appLoader.showLoader();
   }
 
   void playBreakAlarm() async {
-    await audioPlayer.load(alarmPaths[appData.breakAlarm]);
+    await audioPlayer.load(alarmPaths[appData.preferences.breakAlarm]);
     audioPlayer.play();
     StopSoundOverlayLoader.appLoader.showLoader();
   }

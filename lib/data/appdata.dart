@@ -1,17 +1,15 @@
+import 'package:focus/data/storage.dart';
+import 'package:focus/data/types.dart';
+
 class AppData {
   static final AppData _appData = new AppData._internal();
 
-  int workTime = 30;
-  int breakTime = 5;
+  Preferences get preferences => Storage.storage.preferencesBox.values.first;
+  List<Tag> get tags => Storage.storage.tagBox.values.toList();
+  List<Session> get sessions => Storage.storage.sessionBox.values.toList();
+
   int totalWorkTime = 0;
   double productivity = 0;
-
-  int workAlarm = 0;
-  int breakAlarm = 1;
-
-  int tagNumber = 5;
-  List<String> tags = ['1', '2', '3', '4', '5'];
-  List<int> tagTime = [0, 0, 0, 0, 0];
 
   int setNumber = 1;
 
@@ -22,7 +20,3 @@ class AppData {
 }
 
 final appData = AppData();
-
-/*
-
-*/

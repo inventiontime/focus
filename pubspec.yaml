@@ -28,10 +28,8 @@ dependencies:
 
   dart_app_data:
 
-  moor: # use the latest version
-  sqlite3_flutter_libs: # Also use the latest version.
-  path_provider:
-  path:
+  hive: ^1.2.0
+  hive_flutter: ^0.3.0+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,7 +38,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  moor_generator: # use the latest version
+
+  hive_generator:
   build_runner:
 
 # For information on the generic Dart part of this file, see the

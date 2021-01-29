@@ -92,22 +92,15 @@ class TagCard extends StatelessWidget {
 
   void rename(int index) async {
     String s = await parent.renameDialog();
-
     if(s == null) return;
 
-    appData.tags[index] = s;
+    Storage.storage.renameTag(index, s);
     parent._setState();
-
-    Storage.storage.write();
   }
 
   void delete(int index) {
-    appData.tagNumber--;
-    appData.tags.removeAt(index);
-    appData.tagTime.removeAt(index);
+    Storage.storage.deleteTag(index);
     parent._setState();
-
-    Storage.storage.write();
   }
 
   @override
@@ -115,7 +108,7 @@ class TagCard extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: TextButton(child: Icon(Icons.create_outlined, color: red), onPressed: (){rename(index);}),
-        title: Text(appData.tags[index], style: Theme.of(context).textTheme.bodyText2),
+        title: Text(appData.tags[index].name, style: Theme.of(context).textTheme.bodyText2),
         trailing: TextButton(child: Icon(Icons.delete, color: blue), onPressed: (){delete(index);}),
         tileColor: backgroundColor2,
       ),
@@ -129,15 +122,10 @@ class AddCard extends StatelessWidget {
 
   void add() async {
     String s = await parent.renameDialog();
-
     if(s == null) return;
 
-    appData.tagNumber++;
-    appData.tagTime.add(0);
-    appData.tags.add(s);
+    Storage.storage.addTag(s);
     parent._setState();
-
-    Storage.storage.write();
   }
 
   @override
@@ -168,7 +156,7 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
   void initState() {
     super.initState();
 
-    value = (widget.isWork) ? appData.workAlarm : appData.breakAlarm;
+    value = (widget.isWork) ? appData.preferences.workAlarm : appData.preferences.breakAlarm;
   }
 
   @override
@@ -187,9 +175,9 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
             onSelected: (bool selected) {
               setState(() {
                 value = index;
-                (widget.isWork) ? appData.workAlarm = value : appData.breakAlarm = value;
+                (widget.isWork) ? appData.preferences.workAlarm = value : appData.preferences.breakAlarm = value;
                 audio.playPreview(index);
-                Storage.storage.write();
+                Storage.storage.writePreferences();
               });
             },
           );
