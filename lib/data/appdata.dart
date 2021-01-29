@@ -8,9 +8,6 @@ class AppData {
   List<Tag> get tags => Storage.storage.tagBox.values.toList();
   List<Session> get sessions => Storage.storage.sessionBox.values.toList();
 
-  int totalWorkTime = 0;
-  double productivity = 0;
-
   int setNumber = 1;
 
   factory AppData() {

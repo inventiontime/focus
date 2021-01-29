@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:focus/data/appdata.dart';
 import 'package:focus/data.dart';
 import 'package:focus/data/storage.dart';
 import 'package:focus/enum.dart';
@@ -8,8 +7,8 @@ import 'package:focus/widgets/stopsoundoverlay.dart';
 import 'package:focus/widgets/timerscreen/worktimer.dart';
 import 'package:focus/widgets/timerscreen/breaktimer.dart';
 
-void main() {
-  Storage.storage.read();
+void main() async {
+  await Storage.storage.read();
 
   runApp(MyApp());
 }

@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:dart_app_data/dart_app_data.dart' as path;
 
 class Storage {
-  static Storage storage = Storage();
+  static final Storage storage = Storage();
 
   final myData = path.AppData.findOrCreate('Focus');
 
@@ -18,7 +18,7 @@ class Storage {
   Box<Tag> tagBox;
   Box<Session> sessionBox;
 
-  read() async {
+  Future<void> read() async {
     Hive.init(await localPath);
 
     Hive.registerAdapter(PreferencesAdapter());
@@ -30,10 +30,15 @@ class Storage {
     sessionBox = await Hive.openBox<Session>('sessionBox');
 
     if (preferencesBox.isEmpty)
-      preferencesBox.put(0, new Preferences());
+      preferencesBox.add(new Preferences());
 
     if (tagBox.isEmpty)
       tagBox.addAll(defaultTags);
+
+    if(sessionBox.isEmpty)
+      addSession(0);
+
+    return;
   }
 
   void writePreferences() {
