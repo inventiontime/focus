@@ -21,22 +21,22 @@ class Storage {
   Future<void> read() async {
     Hive.init(await localPath);
 
-    Hive.registerAdapter(PreferencesAdapter());
-    Hive.registerAdapter(TagAdapter());
-    Hive.registerAdapter(SessionAdapter());
+    if (!Hive.isAdapterRegistered(PreferencesAdapter().typeId))
+      Hive.registerAdapter(PreferencesAdapter());
+    if (!Hive.isAdapterRegistered(TagAdapter().typeId))
+      Hive.registerAdapter(TagAdapter());
+    if (!Hive.isAdapterRegistered(SessionAdapter().typeId))
+      Hive.registerAdapter(SessionAdapter());
 
-    preferencesBox = await Hive.openBox<Preferences>('preferencesBox');
-    tagBox = await Hive.openBox<Tag>('tagBox');
-    sessionBox = await Hive.openBox<Session>('sessionBox');
+    preferencesBox = await Hive.openBox<Preferences>('preferencesBoxV1');
+    tagBox = await Hive.openBox<Tag>('tagBoxV1');
+    sessionBox = await Hive.openBox<Session>('sessionBoxV1');
 
-    if (preferencesBox.isEmpty)
-      preferencesBox.add(new Preferences());
+    if (preferencesBox.isEmpty) preferencesBox.add(new Preferences());
 
-    if (tagBox.isEmpty)
-      tagBox.addAll(defaultTags);
+    if (tagBox.isEmpty) tagBox.addAll(defaultTags);
 
-    if(sessionBox.isEmpty)
-      addSession(0);
+    if (sessionBox.isEmpty) addSession(0);
 
     return;
   }
@@ -53,10 +53,7 @@ class Storage {
   }
 
   void addTag(String name) {
-    tagBox.add(new Tag(
-        id: nextTagId(),
-        name: name
-    ));
+    tagBox.add(new Tag(id: nextTagId(), name: name));
   }
 
   void renameTag(int index, String name) {
@@ -77,6 +74,20 @@ class Storage {
     appData.sessions.last.tagId = tagId;
     appData.sessions.last.productivity = productivity;
 
-    sessionBox.putAt(sessionBox.length-1, appData.sessions.last);
+    sessionBox.putAt(sessionBox.length - 1, appData.sessions.last);
+  }
+
+  Future<void> clearData() async {
+    await preferencesBox.clear();
+    await tagBox.clear();
+    await sessionBox.clear();
+
+    if (preferencesBox.isEmpty) preferencesBox.add(new Preferences());
+
+    if (tagBox.isEmpty) tagBox.addAll(defaultTags);
+
+    if (sessionBox.isEmpty) addSession(0);
+
+    return;
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:focus/data/appdata.dart';
 import 'package:focus/audio.dart';
 import 'package:focus/data.dart';
 import 'package:focus/data/storage.dart';
+import 'package:focus/functions.dart';
 import 'package:focus/widgets/components.dart';
 import 'package:focus/modifiers.dart';
 
@@ -12,77 +14,149 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  Future<String> renameDialog() async {
-    TextEditingController controller = new TextEditingController();
+  bool isLoading = false;
+
+  Future<String> renameDialog({String startingText}) async {
+    TextEditingController controller = new TextEditingController()
+      ..text = startingText;
 
     return await showDialog<String>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: new TextField(
-              controller: controller,
-              style: Theme.of(context).textTheme.bodyText2,
-              autofocus: true,
-              autocorrect: false,
-              decoration: new InputDecoration(labelText: 'Name', hintText: 'Tag Name'),
-            ),
-            actions: <Widget>[
-              new TextButton(
-                  child: const Text('CANCEL'),
-                  onPressed: () {
-                    Navigator.pop(context, null);
-                  }
+              content: new TextField(
+                controller: controller,
+                style: Theme.of(context).textTheme.bodyText2,
+                autofocus: true,
+                autocorrect: false,
+                decoration: new InputDecoration(
+                    labelText: 'Name', hintText: 'Tag Name'),
               ),
-              new TextButton(
-                child: const Text('SAVE'),
-                onPressed: () {
-                  Navigator.pop(context, controller.text);
-                }
+              actions: <Widget>[
+                new TextButton(
+                    child: const Text('CANCEL'),
+                    onPressed: () {
+                      Navigator.pop(context, null);
+                    }),
+                new TextButton(
+                    child: const Text('SAVE'),
+                    onPressed: () {
+                      Navigator.pop(context, controller.text);
+                    }),
+              ]);
+        });
+  }
+
+  Future<bool> deleteDialog() async {
+    return await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              content: Text(
+                "Are you sure you'd like to delete all Focus data? This action is irreversible",
+                style: Theme.of(context).textTheme.bodyText2,
               ),
-            ]
-          );
-        }
-    );
+              actions: <Widget>[
+                new TextButton(
+                    child: Text('CANCEL'),
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    }),
+                new OutlinedButton(
+                    child: Text('DELETE',
+                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                            color: lighten(red, 0.075),
+                            fontWeight: FontWeight.bold)),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(red.withOpacity(0.2))),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    }),
+              ]);
+        });
+  }
+
+  void deleteData(BuildContext context) async {
+    bool b = await deleteDialog();
+    if (b != null) if (b) {
+      setState(() {
+        isLoading = true;
+      });
+      await Storage.storage.clearData();
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.pushNamed(context, 'settings');
+    }
+    return;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        BackgroundBox(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return isLoading
+        ? BackgroundBox(child: CircularProgressIndicator())
+        : Row(
             children: [
-              Text('Tags', style: Theme.of(context).textTheme.headline3),
-              SizedBox(height: 20),
-              ListView(
-                children: List<Widget>.generate(appData.tags.length+1,
-                  (int index) { return (index < appData.tags.length) ? TagCard(index, this) : AddCard(this); }
-                ),
+              BackgroundBox(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                    Text('Tags', style: Theme.of(context).textTheme.headline3),
+                    SizedBox(height: 20),
+                    ListView(
+                      children: List<Widget>.generate(appData.tags.length + 1,
+                          (int index) {
+                        return (index < appData.tags.length)
+                            ? TagCard(index, this)
+                            : AddCard(this);
+                      }),
+                    ).expanded(),
+                  ]).padding(40))
+                  .expanded(),
+              SizedBox(width: 20),
+              BackgroundBox(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('General',
+                          style: Theme.of(context).textTheme.headline3),
+                      Divider(height: 50),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Work Alarm Sound',
+                                style: Theme.of(context).textTheme.bodyText1),
+                            SizedBox(height: 20),
+                            ChooseAlarm(true),
+                            SizedBox(height: 30),
+                            Text('Break Alarm Sound',
+                                style: Theme.of(context).textTheme.bodyText1),
+                            SizedBox(height: 20),
+                            ChooseAlarm(false),
+                            Divider(height: 50),
+                            OutlinedButton(
+                                onPressed: () {
+                                  deleteData(context);
+                                },
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        red.withOpacity(0.2))),
+                                child: Text('Clear Data',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2
+                                        .copyWith(
+                                            color: lighten(red, 0.075),
+                                            fontWeight: FontWeight.bold))),
+                          ]).scrollable().expanded(),
+                    ]).padding(40),
               ).expanded(),
-            ]
-          ).padding(20)
-        ).expanded(),
-        SizedBox(width: 20),
-        BackgroundBox(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Work Alarm Sound', style: Theme.of(context).textTheme.headline3),
-              SizedBox(height: 20),
-              ChooseAlarm(true),
-              SizedBox(height: 40),
-              Text('Break Alarm Sound', style: Theme.of(context).textTheme.headline3),
-              SizedBox(height: 20),
-              ChooseAlarm(false),
-            ]
-          ).padding(20).scrollable(),
-        ).expanded(),
-      ],
-    );
+            ],
+          );
   }
 
-  void _setState() => setState((){});
+  void _setState() => setState(() {});
 }
 
 class TagCard extends StatelessWidget {
@@ -91,25 +165,37 @@ class TagCard extends StatelessWidget {
   final _SettingsState parent;
 
   void rename(int index) async {
-    String s = await parent.renameDialog();
-    if(s == null) return;
+    String s =
+        await parent.renameDialog(startingText: appData.tags[index].name);
+    if (s == null) return;
 
     Storage.storage.renameTag(index, s);
     parent._setState();
   }
 
   void delete(int index) {
-    Storage.storage.deleteTag(index);
-    parent._setState();
+    if(appData.tags.length > 1) {
+      Storage.storage.deleteTag(index);
+      parent._setState();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: TextButton(child: Icon(Icons.create_outlined, color: red), onPressed: (){rename(index);}),
-        title: Text(appData.tags[index].name, style: Theme.of(context).textTheme.bodyText2),
-        trailing: TextButton(child: Icon(Icons.delete, color: blue), onPressed: (){delete(index);}),
+        leading: TextButton(
+            child: Icon(Icons.create_outlined, color: red),
+            onPressed: () {
+              rename(index);
+            }),
+        title: Text(appData.tags[index].name,
+            style: Theme.of(context).textTheme.bodyText2),
+        trailing: TextButton(
+            child: Icon(Icons.delete, color: blue),
+            onPressed: () {
+              delete(index);
+            }),
         tileColor: backgroundColor2,
       ),
     );
@@ -122,7 +208,7 @@ class AddCard extends StatelessWidget {
 
   void add() async {
     String s = await parent.renameDialog();
-    if(s == null) return;
+    if (s == null) return;
 
     Storage.storage.addTag(s);
     parent._setState();
@@ -134,7 +220,9 @@ class AddCard extends StatelessWidget {
       child: ListTile(
         leading: Icon(Icons.add),
         title: Text('Add Card', style: Theme.of(context).textTheme.bodyText2),
-        onTap: (){add();},
+        onTap: () {
+          add();
+        },
         tileColor: backgroundColor2,
       ),
     );
@@ -156,7 +244,9 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
   void initState() {
     super.initState();
 
-    value = (widget.isWork) ? appData.preferences.workAlarm : appData.preferences.breakAlarm;
+    value = (widget.isWork)
+        ? appData.preferences.workAlarm
+        : appData.preferences.breakAlarm;
   }
 
   @override
@@ -164,8 +254,9 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
     return Wrap(
       spacing: 10,
       runSpacing: 15,
-      children: List<Widget>.generate(alarms.length,
-            (int index) {
+      children: List<Widget>.generate(
+        alarms.length,
+        (int index) {
           return ChoiceChip(
             selectedColor: red,
             label: Text(alarms[index]),
@@ -175,7 +266,9 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
             onSelected: (bool selected) {
               setState(() {
                 value = index;
-                (widget.isWork) ? appData.preferences.workAlarm = value : appData.preferences.breakAlarm = value;
+                (widget.isWork)
+                    ? appData.preferences.workAlarm = value
+                    : appData.preferences.breakAlarm = value;
                 audio.playPreview(index);
                 Storage.storage.writePreferences();
               });

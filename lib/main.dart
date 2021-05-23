@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: theme,
       home: Stack(
         children: [
@@ -26,6 +25,7 @@ class MyApp extends StatelessWidget {
             title: 'Focus',
             initialRoute: 'dashboard',
             routes: {
+              'help': (context) => HomePage(HomePageType.help),
               'dashboard': (context) => HomePage(HomePageType.dashboard),
               'timer': (context) => HomePage(HomePageType.timer),
               'settings': (context) => HomePage(HomePageType.settings),

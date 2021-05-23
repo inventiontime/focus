@@ -25,9 +25,9 @@ dependencies:
     sdk: flutter
 
   flutter_audio_desktop: ^0.0.8
-
+  heatmap_calendar: ^1.2.5
   dart_app_data:
-
+  intl: ^0.17.0
   hive: ^1.2.0
   hive_flutter: ^0.3.0+1
 

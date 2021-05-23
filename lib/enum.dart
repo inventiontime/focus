@@ -1,4 +1,5 @@
 enum HomePageType {
+  help,
   dashboard,
   timer,
   settings,

@@ -23,7 +23,7 @@ extension WidgetModifier on Widget {
 
   Widget scrollable() {
     return SingleChildScrollView(
-        child: this,
+      child: this,
     );
   }
 }

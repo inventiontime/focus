@@ -22,6 +22,10 @@ int day() {
   return DateTime.now().difference(DateTime(1)).inDays;
 }
 
+DateTime getDateFromDay(int day) {
+  return DateTime(1).add(Duration(days: day));
+}
+
 int hour() {
   return DateTime.now().hour;
 }

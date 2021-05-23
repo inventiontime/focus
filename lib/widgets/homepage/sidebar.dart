@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus/modifiers.dart';
 import 'package:focus/data.dart';
 
 class Sidebar extends StatelessWidget {
@@ -7,33 +8,71 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return Column(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Stack(alignment: Alignment.center, children: [
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextButton(
-                child: Icon(Icons.assessment_outlined, size: constraints.maxWidth * widthFactor, color: gray),
-                onPressed: () {Navigator.pushNamed(context, 'dashboard');},
+              Tooltip(
+                child: TextButton(
+                  child: Icon(Icons.assessment_outlined,
+                      size: constraints.maxWidth * widthFactor, color: gray),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'dashboard');
+                  },
+                ),
+                message: 'Dashboard',
               ),
               SizedBox(height: 10),
               // Text('DASHBOARD', style: Theme.of(context).textTheme.subtitle1),
               SizedBox(height: spacing),
-              TextButton(
-                child: Icon(Icons.alarm_add_outlined, size: constraints.maxWidth * widthFactor, color: gray),
-                onPressed: () {Navigator.pushNamed(context, 'timer');},
+              Tooltip(
+                child: TextButton(
+                  child: Icon(Icons.alarm_add_outlined,
+                      size: constraints.maxWidth * widthFactor, color: gray),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'timer');
+                  },
+                ),
+                message: 'Timer',
               ),
               SizedBox(height: 10),
               // Text('TIMER', style: Theme.of(context).textTheme.subtitle1),
               SizedBox(height: spacing),
-              TextButton(
-                child: Icon(Icons.settings_outlined, size: constraints.maxWidth * widthFactor, color: gray),
-                onPressed: () {Navigator.pushNamed(context, 'settings');},
+              Tooltip(
+                child: TextButton(
+                  child: Icon(Icons.settings_outlined,
+                      size: constraints.maxWidth * widthFactor, color: gray),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'settings');
+                  },
+                ),
+                message: 'Settings',
               ),
               SizedBox(height: 10),
               // Text('SETTINGS', style: Theme.of(context).textTheme.subtitle1),
             ],
-          );
-        },
-      );
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container().expanded(),
+              Tooltip(
+                child: TextButton(
+                  child: Icon(Icons.help_outline,
+                      size: constraints.maxWidth * widthFactor, color: gray),
+                  // TODO: enable help button
+                  //onPressed: () {Navigator.pushNamed(context, 'help');},
+                  onPressed: null,
+                ),
+                message: 'Help',
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
+        ]);
+      },
+    );
   }
 }

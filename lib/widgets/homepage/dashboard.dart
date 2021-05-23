@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:focus/data.dart';
 import 'package:focus/widgets/components.dart';
 import 'package:focus/modifiers.dart';
-import 'package:focus/widgets/homepage/dashboardpages/daystats.dart';
+
+import 'dashboardwidgets/heatmap.dart';
+import 'dashboardwidgets/tagstats.dart';
+import 'dashboardwidgets/daystats.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -10,17 +13,26 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final int noOfPages = 1;
   int page = 0;
+  int timeOffset = 0;
+  List<Widget> get pages => [
+        DayStats(),
+        TagStats(timeOffset),
+        Heatmap(),
+      ];
 
   void next() {
-    if(page < noOfPages-1)
-      setState(() { page++; });
+    if (page < pages.length - 1)
+      setState(() {
+        page++;
+      });
   }
 
   void previous() {
-    if(page > 0)
-      setState(() { page--; });
+    if (page > 0)
+      setState(() {
+        page--;
+      });
   }
 
   @override
@@ -30,11 +42,13 @@ class _DashboardState extends State<Dashboard> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextButton(child: Icon(Icons.chevron_left_outlined, color: green), onPressed: (){}),
-          [
-            DayStats(),
-          ][page].expanded(),
-          TextButton(child: Icon(Icons.chevron_right_outlined, color: green), onPressed: (){}),
+          TextButton(
+              child: Icon(Icons.arrow_back_ios_outlined, color: green),
+              onPressed: previous),
+          pages[page].padding(30).expanded(),
+          TextButton(
+              child: Icon(Icons.arrow_forward_ios_outlined, color: green),
+              onPressed: next),
         ],
       ),
     );

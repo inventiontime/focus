@@ -18,20 +18,22 @@ class StopSoundOverlay extends StatelessWidget {
   }
 }
 
-class StopSoundOverlayWidget extends StatelessWidget{
+class StopSoundOverlayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
       right: 30,
       top: 30,
       child: Material(
-          color: backgroundColor3,
-          borderRadius: BorderRadius.circular(20),
-          elevation: 10,
-          child: TextButton(
-            child: Icon(Icons.alarm_off_outlined, size: 30),
-            onPressed: (){audio.stopAlarm();},
-          ).padding(10),
+        color: backgroundColor3,
+        borderRadius: BorderRadius.circular(20),
+        elevation: 10,
+        child: TextButton(
+          child: Icon(Icons.alarm_off_outlined, size: 30),
+          onPressed: () {
+            audio.stopAlarm();
+          },
+        ).padding(10),
       ),
     );
   }

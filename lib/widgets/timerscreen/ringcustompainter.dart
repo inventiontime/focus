@@ -3,11 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class RingCustomPainter extends CustomPainter {
-  RingCustomPainter({
-    this.animation,
-    this.color,
-    this.backgroundColor
-  }) : super(repaint: animation);
+  RingCustomPainter({this.animation, this.color, this.backgroundColor})
+      : super(repaint: animation);
   final Animation<double> animation;
   final Color color, backgroundColor;
 
@@ -26,9 +23,9 @@ class RingCustomPainter extends CustomPainter {
     canvas.drawCircle(center, radius, paint);
 
     paint.color = color;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius),
-        startRadian, progress, false, paint);
-    }
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startRadian,
+        progress, false, paint);
+  }
 
   @override
   bool shouldRepaint(RingCustomPainter old) {

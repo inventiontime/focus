@@ -27,8 +27,7 @@ class Audio {
   }
 
   void stopAlarm() {
-    if(audioPlayer.isPlaying)
-      audioPlayer.pause();
+    if (audioPlayer.isPlaying) audioPlayer.pause();
     StopSoundOverlayLoader.appLoader.hideLoader();
   }
 
