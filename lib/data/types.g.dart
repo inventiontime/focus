@@ -6,54 +6,9 @@ part of 'types.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PreferencesAdapter extends TypeAdapter<Preferences> {
-  @override
-  final int typeId = 1;
-
-  @override
-  Preferences read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return Preferences()
-      ..workTime = fields[0] as int
-      ..breakTime = fields[1] as int
-      ..workAlarm = fields[2] as int
-      ..breakAlarm = fields[3] as int
-      ..nextTagId = fields[4] as int;
-  }
-
-  @override
-  void write(BinaryWriter writer, Preferences obj) {
-    writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.workTime)
-      ..writeByte(1)
-      ..write(obj.breakTime)
-      ..writeByte(2)
-      ..write(obj.workAlarm)
-      ..writeByte(3)
-      ..write(obj.breakAlarm)
-      ..writeByte(4)
-      ..write(obj.nextTagId);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PreferencesAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
 class TagAdapter extends TypeAdapter<Tag> {
   @override
-  final int typeId = 2;
+  final int typeId = 1;
 
   @override
   Tag read(BinaryReader reader) {
@@ -90,7 +45,7 @@ class TagAdapter extends TypeAdapter<Tag> {
 
 class SessionAdapter extends TypeAdapter<Session> {
   @override
-  final int typeId = 3;
+  final int typeId = 2;
 
   @override
   Session read(BinaryReader reader) {

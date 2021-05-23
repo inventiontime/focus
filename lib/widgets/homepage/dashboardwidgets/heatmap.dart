@@ -102,8 +102,8 @@ class _HeatmapState extends State<Heatmap> {
               input: workTime,
               colorThresholds: {
                 1: red.withOpacity(0.05),
-                for (int i = 5; i <= 100; i += 5)
-                  i: red.withOpacity((i / 100 > 1 ? 1 : i.toDouble() / 100)),
+                for (int i = 5; i <= 120; i += 5)
+                  i: red.withOpacity((i / 120 > 1 ? 1 : i / 120)),
               },
               labelTextColor: foregroundColor,
             ),
@@ -113,8 +113,9 @@ class _HeatmapState extends State<Heatmap> {
             HeatmapWidget(
               input: productivity,
               colorThresholds: {
-                for (int i = 30; i <= 100; i += 5)
-                  i: blue.withOpacity(i.toDouble() / 100),
+                1: blue.withOpacity(0.05),
+                for (int i = 5; i <= 100; i += 5)
+                  i: blue.withOpacity((i-40) / (100-40) < 0 ? 0 : (i-40) / (100-40)),
               },
               labelTextColor: foregroundColor,
             ),
@@ -126,8 +127,8 @@ class _HeatmapState extends State<Heatmap> {
               input: productiveTime,
               colorThresholds: {
                 1: violet.withOpacity(0.05),
-                for (int i = 5; i <= 100; i += 5)
-                  i: violet.withOpacity((i / 100 > 1 ? 1 : i.toDouble() / 100)),
+                for (int i = 5; i <= 120; i += 5)
+                  i: violet.withOpacity((i / 120 > 1 ? 1 : i / 120)),
               },
               labelTextColor: foregroundColor,
             ),

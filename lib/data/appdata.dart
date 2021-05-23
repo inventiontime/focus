@@ -4,7 +4,7 @@ import 'package:focus/data/types.dart';
 class AppData {
   static final AppData _appData = new AppData._internal();
 
-  Preferences get preferences => Storage.storage.preferencesBox.values.first;
+  Map<dynamic, int> get preferences => Storage.storage.preferencesBox.toMap();
   List<Tag> get tags => Storage.storage.tagBox.values.toList();
   List<Session> get sessions => Storage.storage.sessionBox.values.toList();
 

@@ -3,22 +3,6 @@ import 'package:hive/hive.dart';
 part 'types.g.dart';
 
 @HiveType(typeId: 1)
-class Preferences {
-  @HiveField(0)
-  int workTime = 30;
-  @HiveField(1)
-  int breakTime = 5;
-
-  @HiveField(2)
-  int workAlarm = 0;
-  @HiveField(3)
-  int breakAlarm = 1;
-
-  @HiveField(4)
-  int nextTagId = 20;
-}
-
-@HiveType(typeId: 2)
 class Tag {
   Tag({this.id, this.name});
 
@@ -28,7 +12,7 @@ class Tag {
   String name;
 }
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 2)
 class Session {
   Session(
       {this.time,
@@ -59,3 +43,19 @@ List<Tag> defaultTags = [
   Tag(id: 4, name: 'Biology'),
   Tag(id: 5, name: 'Others'),
 ];
+
+enum Preference {
+  workTime,
+  breakTime,
+  workAlarm,
+  breakAlarm,
+  nextTagId,
+}
+
+Map<Preference, int> defaultPreferences = {
+  Preference.workTime : 30,
+  Preference.breakTime : 5,
+  Preference.workAlarm : 0,
+  Preference.breakAlarm : 1,
+  Preference.nextTagId : 20,
+};

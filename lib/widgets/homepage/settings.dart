@@ -4,6 +4,7 @@ import 'package:focus/data/appdata.dart';
 import 'package:focus/audio.dart';
 import 'package:focus/data.dart';
 import 'package:focus/data/storage.dart';
+import 'package:focus/data/types.dart';
 import 'package:focus/functions.dart';
 import 'package:focus/widgets/components.dart';
 import 'package:focus/modifiers.dart';
@@ -245,8 +246,8 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
     super.initState();
 
     value = (widget.isWork)
-        ? appData.preferences.workAlarm
-        : appData.preferences.breakAlarm;
+        ? appData.preferences[Preference.workAlarm.index]
+        : appData.preferences[Preference.breakAlarm.index];
   }
 
   @override
@@ -267,10 +268,9 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
               setState(() {
                 value = index;
                 (widget.isWork)
-                    ? appData.preferences.workAlarm = value
-                    : appData.preferences.breakAlarm = value;
+                    ? Storage.storage.setPreference(Preference.workAlarm, value)
+                    : Storage.storage.setPreference(Preference.breakAlarm, value);
                 audio.playPreview(index);
-                Storage.storage.writePreferences();
               });
             },
           );

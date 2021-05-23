@@ -4,6 +4,7 @@ import 'package:focus/data/appdata.dart';
 import 'package:focus/audio.dart';
 import 'package:focus/data.dart';
 import 'package:focus/data/storage.dart';
+import 'package:focus/data/types.dart';
 import 'package:focus/enum.dart';
 import 'package:focus/widgets/components.dart';
 import 'package:focus/widgets/timerscreen/ring.dart';
@@ -26,8 +27,8 @@ class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
     controller = AnimationController(
         vsync: this,
         duration: (Foundation.kReleaseMode
-            ? Duration(minutes: appData.preferences.breakTime)
-            : Duration(seconds: appData.preferences.breakTime)),
+            ? Duration(minutes: appData.preferences[Preference.breakTime.index])
+            : Duration(seconds: appData.preferences[Preference.breakTime.index])),
         reverseDuration: Duration(seconds: 1));
 
     controller.reverse(from: 1);

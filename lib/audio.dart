@@ -1,6 +1,7 @@
 import 'package:flutter_audio_desktop/flutter_audio_desktop.dart';
 import 'package:focus/data/appdata.dart';
 import 'package:focus/data.dart';
+import 'package:focus/data/types.dart';
 import 'package:focus/widgets/stopsoundoverlay.dart';
 
 class Audio {
@@ -9,13 +10,13 @@ class Audio {
   var audioPlayer = new AudioPlayer(id: 0);
 
   void playWorkAlarm() async {
-    await audioPlayer.load(alarmPaths[appData.preferences.workAlarm]);
+    await audioPlayer.load(alarmPaths[appData.preferences[Preference.workAlarm.index]]);
     audioPlayer.play();
     StopSoundOverlayLoader.appLoader.showLoader();
   }
 
   void playBreakAlarm() async {
-    await audioPlayer.load(alarmPaths[appData.preferences.breakAlarm]);
+    await audioPlayer.load(alarmPaths[appData.preferences[Preference.breakAlarm.index]]);
     audioPlayer.play();
     StopSoundOverlayLoader.appLoader.showLoader();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus/data.dart';
 import 'package:focus/data/storage.dart';
+import 'package:focus/data/types.dart';
 import 'package:focus/modifiers.dart';
 import 'package:focus/widgets/components.dart';
 import 'package:focus/data/appdata.dart';
@@ -15,14 +16,14 @@ class _TimerState extends State<Timer> {
     setState(() {
       if (_workTimeSelected) {
         if (quadruple)
-          appData.preferences.workTime += 20;
+          Storage.storage.addToPreference(Preference.workTime, 20);
         else
-          appData.preferences.workTime += 5;
+          Storage.storage.addToPreference(Preference.workTime, 5);
       } else {
         if (quadruple)
-          appData.preferences.breakTime += 5;
+          Storage.storage.addToPreference(Preference.breakTime, 5);
         else
-          appData.preferences.breakTime += 1;
+          Storage.storage.addToPreference(Preference.breakTime, 1);
       }
     });
   }
@@ -31,24 +32,23 @@ class _TimerState extends State<Timer> {
     setState(() {
       if (_workTimeSelected) {
         if (quadruple)
-          appData.preferences.workTime -= 20;
+          Storage.storage.addToPreference(Preference.workTime, -20);
         else
-          appData.preferences.workTime -= 5;
+          Storage.storage.addToPreference(Preference.workTime, -5);
       } else {
         if (quadruple)
-          appData.preferences.breakTime -= 5;
+          Storage.storage.addToPreference(Preference.breakTime, -5);
         else
-          appData.preferences.breakTime -= 1;
+          Storage.storage.addToPreference(Preference.breakTime, -1);
       }
-      if (appData.preferences.workTime < 5) appData.preferences.workTime = 5;
-      if (appData.preferences.breakTime < 1) appData.preferences.breakTime = 1;
+      if (appData.preferences[Preference.workTime.index] < 5) Storage.storage.addToPreference(Preference.workTime, 5);
+      if (appData.preferences[Preference.breakTime.index] < 1) Storage.storage.addToPreference(Preference.breakTime, 1);
     });
   }
 
   void _continue() {
     appData.setNumber = 1;
     Navigator.pushNamed(context, 'worktimer');
-    Storage.storage.writePreferences();
   }
 
   @override
@@ -70,7 +70,7 @@ class _TimerState extends State<Timer> {
                           Text('work time',
                               style: Theme.of(context).textTheme.bodyText1),
                           RowText(
-                              appData.preferences.workTime.toString(), 'min',
+                              appData.preferences[Preference.workTime.index].toString(), 'min',
                               style1: Theme.of(context)
                                   .textTheme
                                   .headline2
@@ -125,7 +125,7 @@ class _TimerState extends State<Timer> {
                           Text('break time',
                               style: Theme.of(context).textTheme.bodyText1),
                           RowText(
-                              appData.preferences.breakTime.toString(), 'min',
+                              appData.preferences[Preference.breakTime.index].toString(), 'min',
                               style1: Theme.of(context)
                                   .textTheme
                                   .headline2

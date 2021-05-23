@@ -4,6 +4,7 @@ import 'package:focus/data/appdata.dart';
 import 'package:focus/audio.dart';
 import 'package:focus/data.dart';
 import 'package:focus/data/storage.dart';
+import 'package:focus/data/types.dart';
 import 'package:focus/enum.dart';
 import 'package:focus/widgets/timerscreen/ring.dart';
 import 'package:focus/modifiers.dart';
@@ -23,8 +24,8 @@ class _WorkTimerState extends State<WorkTimer> with TickerProviderStateMixin {
     controller = AnimationController(
         vsync: this,
         duration: (Foundation.kReleaseMode
-            ? Duration(minutes: appData.preferences.workTime)
-            : Duration(seconds: appData.preferences.workTime)),
+            ? Duration(minutes: appData.preferences[Preference.workTime.index])
+            : Duration(seconds: appData.preferences[Preference.workTime.index])),
         reverseDuration: Duration(seconds: 1));
 
     controller.reverse(from: 1);
@@ -32,7 +33,7 @@ class _WorkTimerState extends State<WorkTimer> with TickerProviderStateMixin {
     controller.reverse().whenComplete(() => {
           controller.forward(from: 0),
           controller.forward().whenComplete(() => {
-                Storage.storage.addSession(appData.preferences.workTime),
+                Storage.storage.addSession(appData.preferences[Preference.workTime.index]),
                 audio.playWorkAlarm(),
                 Navigator.pushNamed(context, 'breaktimer'),
               })

@@ -14,41 +14,49 @@ class Storage {
     return x.path;
   }
 
-  Box<Preferences> preferencesBox;
+  Box<int> preferencesBox;
   Box<Tag> tagBox;
   Box<Session> sessionBox;
 
   Future<void> read() async {
     Hive.init(await localPath);
 
-    if (!Hive.isAdapterRegistered(PreferencesAdapter().typeId))
-      Hive.registerAdapter(PreferencesAdapter());
-    if (!Hive.isAdapterRegistered(TagAdapter().typeId))
-      Hive.registerAdapter(TagAdapter());
-    if (!Hive.isAdapterRegistered(SessionAdapter().typeId))
-      Hive.registerAdapter(SessionAdapter());
+    Hive.registerAdapter(TagAdapter());
+    Hive.registerAdapter(SessionAdapter());
 
-    preferencesBox = await Hive.openBox<Preferences>('preferencesBoxV1');
+    preferencesBox = await Hive.openBox<int>('preferencesBoxV1');
     tagBox = await Hive.openBox<Tag>('tagBoxV1');
     sessionBox = await Hive.openBox<Session>('sessionBoxV1');
 
-    if (preferencesBox.isEmpty) preferencesBox.add(new Preferences());
-
-    if (tagBox.isEmpty) tagBox.addAll(defaultTags);
-
-    if (sessionBox.isEmpty) addSession(0);
+    await initialize();
 
     return;
   }
 
-  void writePreferences() {
-    preferencesBox.putAt(0, appData.preferences);
+  Future<void> initialize() async {
+    for(int i = 0; i < Preference.values.length; i++) {
+      if (getPreference(Preference.values[i]) == null) setPreference(Preference.values[i], defaultPreferences[Preference.values[i]]);
+    }
+    if (tagBox.isEmpty) await tagBox.addAll(defaultTags);
+    if (sessionBox.isEmpty) addSession(0);
+    return;
+  }
+
+  int getPreference(Preference preference) {
+    return appData.preferences[preference.index];
+  }
+
+  void setPreference(Preference preference, int value) {
+    preferencesBox.put(preference.index, value);
+  }
+
+  void addToPreference(Preference preference, int value) {
+    preferencesBox.put(preference.index, appData.preferences[preference.index]+value);
   }
 
   int nextTagId() {
-    int id = appData.preferences.nextTagId;
-    appData.preferences.nextTagId++;
-    preferencesBox.putAt(0, appData.preferences);
+    int id = appData.preferences[Preference.nextTagId.index];
+    preferencesBox.put(Preference.nextTagId.index, appData.preferences[Preference.nextTagId.index]+1);
     return id;
   }
 
@@ -82,11 +90,7 @@ class Storage {
     await tagBox.clear();
     await sessionBox.clear();
 
-    if (preferencesBox.isEmpty) preferencesBox.add(new Preferences());
-
-    if (tagBox.isEmpty) tagBox.addAll(defaultTags);
-
-    if (sessionBox.isEmpty) addSession(0);
+    await initialize();
 
     return;
   }
