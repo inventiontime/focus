@@ -10,13 +10,15 @@ class Audio {
   var audioPlayer = new AudioPlayer(id: 0);
 
   void playWorkAlarm() async {
-    await audioPlayer.load(alarmPaths[appData.preferences[Preference.workAlarm.index]]);
+    await audioPlayer
+        .load(alarmPaths[appData.preferences[Preference.workAlarm.index]]);
     audioPlayer.play();
     StopSoundOverlayLoader.appLoader.showLoader();
   }
 
   void playBreakAlarm() async {
-    await audioPlayer.load(alarmPaths[appData.preferences[Preference.breakAlarm.index]]);
+    await audioPlayer
+        .load(alarmPaths[appData.preferences[Preference.breakAlarm.index]]);
     audioPlayer.play();
     StopSoundOverlayLoader.appLoader.showLoader();
   }

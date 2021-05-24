@@ -115,7 +115,8 @@ class _HeatmapState extends State<Heatmap> {
               colorThresholds: {
                 1: blue.withOpacity(0.05),
                 for (int i = 5; i <= 100; i += 5)
-                  i: blue.withOpacity((i-40) / (100-40) < 0 ? 0 : (i-40) / (100-40)),
+                  i: blue.withOpacity(
+                      (i - 40) / (100 - 40) < 0 ? 0 : (i - 40) / (100 - 40)),
               },
               labelTextColor: foregroundColor,
             ),

@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  bitsdojo_window: ^0.1.0+1
   flutter_audio_desktop: ^0.0.8
   heatmap_calendar: ^1.2.5
   dart_app_data:
@@ -55,6 +56,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/help/
 
   fonts:
     - family: Varela

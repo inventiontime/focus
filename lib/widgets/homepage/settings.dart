@@ -175,7 +175,7 @@ class TagCard extends StatelessWidget {
   }
 
   void delete(int index) {
-    if(appData.tags.length > 1) {
+    if (appData.tags.length > 1) {
       Storage.storage.deleteTag(index);
       parent._setState();
     }
@@ -269,7 +269,8 @@ class _ChooseAlarmState extends State<ChooseAlarm> {
                 value = index;
                 (widget.isWork)
                     ? Storage.storage.setPreference(Preference.workAlarm, value)
-                    : Storage.storage.setPreference(Preference.breakAlarm, value);
+                    : Storage.storage
+                        .setPreference(Preference.breakAlarm, value);
                 audio.playPreview(index);
               });
             },

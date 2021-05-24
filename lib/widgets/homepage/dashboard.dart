@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:focus/data.dart';
+import 'package:focus/data/appdata.dart';
+import 'package:focus/data/storage.dart';
 import 'package:focus/widgets/components.dart';
 import 'package:focus/modifiers.dart';
-
+import 'package:focus/data/types.dart';
 import 'dashboardwidgets/heatmap.dart';
 import 'dashboardwidgets/tagstats.dart';
 import 'dashboardwidgets/daystats.dart';

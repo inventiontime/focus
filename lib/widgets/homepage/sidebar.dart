@@ -62,9 +62,7 @@ class Sidebar extends StatelessWidget {
                 child: TextButton(
                   child: Icon(Icons.help_outline,
                       size: constraints.maxWidth * widthFactor, color: gray),
-                  // TODO: enable help button
-                  //onPressed: () {Navigator.pushNamed(context, 'help');},
-                  onPressed: null,
+                  onPressed: () {Navigator.pushNamed(context, 'help');},
                 ),
                 message: 'Help',
               ),

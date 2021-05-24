@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:focus/data.dart';
+import 'package:focus/data/appdata.dart';
 import 'package:focus/data/storage.dart';
+import 'package:focus/data/types.dart';
 import 'package:focus/enum.dart';
 import 'package:focus/widgets/homepage/homepage.dart';
 import 'package:focus/widgets/stopsoundoverlay.dart';
@@ -18,12 +20,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: theme,
       home: Stack(
         children: [
           MaterialApp(
             title: 'Focus',
-            initialRoute: 'dashboard',
+            initialRoute: (Storage.storage.getPreference(Preference.helpRead) == 0 ? 'help' : 'dashboard'),
             routes: {
               'help': (context) => HomePage(HomePageType.help),
               'dashboard': (context) => HomePage(HomePageType.dashboard),

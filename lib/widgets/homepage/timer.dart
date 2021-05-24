@@ -41,8 +41,11 @@ class _TimerState extends State<Timer> {
         else
           Storage.storage.addToPreference(Preference.breakTime, -1);
       }
-      if (appData.preferences[Preference.workTime.index] < 5) Storage.storage.addToPreference(Preference.workTime, 5);
-      if (appData.preferences[Preference.breakTime.index] < 1) Storage.storage.addToPreference(Preference.breakTime, 1);
+      print(appData.preferences[Preference.workTime.index]);
+      if (appData.preferences[Preference.workTime.index] < 5)
+        Storage.storage.setPreference(Preference.workTime, 5);
+      if (appData.preferences[Preference.breakTime.index] < 1)
+        Storage.storage.setPreference(Preference.breakTime, 1);
     });
   }
 
@@ -70,7 +73,9 @@ class _TimerState extends State<Timer> {
                           Text('work time',
                               style: Theme.of(context).textTheme.bodyText1),
                           RowText(
-                              appData.preferences[Preference.workTime.index].toString(), 'min',
+                              appData.preferences[Preference.workTime.index]
+                                  .toString(),
+                              'min',
                               style1: Theme.of(context)
                                   .textTheme
                                   .headline2
@@ -125,7 +130,9 @@ class _TimerState extends State<Timer> {
                           Text('break time',
                               style: Theme.of(context).textTheme.bodyText1),
                           RowText(
-                              appData.preferences[Preference.breakTime.index].toString(), 'min',
+                              appData.preferences[Preference.breakTime.index]
+                                  .toString(),
+                              'min',
                               style1: Theme.of(context)
                                   .textTheme
                                   .headline2

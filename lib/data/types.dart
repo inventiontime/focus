@@ -50,12 +50,14 @@ enum Preference {
   workAlarm,
   breakAlarm,
   nextTagId,
+  helpRead,
 }
 
 Map<Preference, int> defaultPreferences = {
-  Preference.workTime : 30,
-  Preference.breakTime : 5,
-  Preference.workAlarm : 0,
-  Preference.breakAlarm : 1,
-  Preference.nextTagId : 20,
+  Preference.workTime: 30,
+  Preference.breakTime: 5,
+  Preference.workAlarm: 0,
+  Preference.breakAlarm: 1,
+  Preference.nextTagId: 20,
+  Preference.helpRead: 0,
 };

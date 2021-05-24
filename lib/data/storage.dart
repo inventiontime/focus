@@ -34,8 +34,10 @@ class Storage {
   }
 
   Future<void> initialize() async {
-    for(int i = 0; i < Preference.values.length; i++) {
-      if (getPreference(Preference.values[i]) == null) setPreference(Preference.values[i], defaultPreferences[Preference.values[i]]);
+    for (int i = 0; i < Preference.values.length; i++) {
+      if (getPreference(Preference.values[i]) == null)
+        setPreference(
+            Preference.values[i], defaultPreferences[Preference.values[i]]);
     }
     if (tagBox.isEmpty) await tagBox.addAll(defaultTags);
     if (sessionBox.isEmpty) addSession(0);
@@ -51,12 +53,14 @@ class Storage {
   }
 
   void addToPreference(Preference preference, int value) {
-    preferencesBox.put(preference.index, appData.preferences[preference.index]+value);
+    preferencesBox.put(
+        preference.index, appData.preferences[preference.index] + value);
   }
 
   int nextTagId() {
     int id = appData.preferences[Preference.nextTagId.index];
-    preferencesBox.put(Preference.nextTagId.index, appData.preferences[Preference.nextTagId.index]+1);
+    preferencesBox.put(Preference.nextTagId.index,
+        appData.preferences[Preference.nextTagId.index] + 1);
     return id;
   }
 

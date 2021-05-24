@@ -25,7 +25,8 @@ class _WorkTimerState extends State<WorkTimer> with TickerProviderStateMixin {
         vsync: this,
         duration: (Foundation.kReleaseMode
             ? Duration(minutes: appData.preferences[Preference.workTime.index])
-            : Duration(seconds: appData.preferences[Preference.workTime.index])),
+            : Duration(
+                seconds: appData.preferences[Preference.workTime.index])),
         reverseDuration: Duration(seconds: 1));
 
     controller.reverse(from: 1);
@@ -33,7 +34,8 @@ class _WorkTimerState extends State<WorkTimer> with TickerProviderStateMixin {
     controller.reverse().whenComplete(() => {
           controller.forward(from: 0),
           controller.forward().whenComplete(() => {
-                Storage.storage.addSession(appData.preferences[Preference.workTime.index]),
+                Storage.storage
+                    .addSession(appData.preferences[Preference.workTime.index]),
                 audio.playWorkAlarm(),
                 Navigator.pushNamed(context, 'breaktimer'),
               })

@@ -28,7 +28,8 @@ class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
         vsync: this,
         duration: (Foundation.kReleaseMode
             ? Duration(minutes: appData.preferences[Preference.breakTime.index])
-            : Duration(seconds: appData.preferences[Preference.breakTime.index])),
+            : Duration(
+                seconds: appData.preferences[Preference.breakTime.index])),
         reverseDuration: Duration(seconds: 1));
 
     controller.reverse(from: 1);
