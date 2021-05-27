@@ -3,8 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  bitsdojo_window_windows
-  flutter_audio_desktop
+  dart_vlc
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

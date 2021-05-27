@@ -6,6 +6,8 @@ import 'package:focus/widgets/homepage/dashboardwidgets/headings.dart';
 import 'package:focus/widgets/homepage/dashboardwidgets/statswidget.dart';
 
 class DayStats extends StatefulWidget {
+  DayStats({Key key}) : super(key: key);
+
   @override
   _DayStatsState createState() => _DayStatsState();
 }

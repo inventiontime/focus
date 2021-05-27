@@ -9,6 +9,8 @@ import 'package:heatmap_calendar/time_utils.dart';
 import 'headings.dart';
 
 class Heatmap extends StatefulWidget {
+  Heatmap({Key key}) : super(key: key);
+
   @override
   _HeatmapState createState() => _HeatmapState();
 }

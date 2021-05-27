@@ -78,15 +78,21 @@ class Storage {
   }
 
   void addSession(int time) {
-    sessionBox.add(Session(time: time, day: day(), hour: hour()));
+    sessionBox
+        .add(Session(time: time, day: day(), hour: hour(), minute: minute()));
   }
 
-  void addSessionDetails(int tagId, int productivity) {
+  void deleteSession(int index) {
+    sessionBox.deleteAt(index);
+  }
+
+  void addSessionDetails(int tagId, int productivity, {int index}) {
     appData.sessions.last.details = true;
     appData.sessions.last.tagId = tagId;
     appData.sessions.last.productivity = productivity;
 
-    sessionBox.putAt(sessionBox.length - 1, appData.sessions.last);
+    sessionBox.putAt(
+        (index != null ? index : sessionBox.length - 1), appData.sessions.last);
   }
 
   Future<void> clearData() async {

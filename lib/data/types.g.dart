@@ -57,28 +57,34 @@ class SessionAdapter extends TypeAdapter<Session> {
       time: fields[0] as int,
       day: fields[1] as int,
       hour: fields[2] as int,
+      minute: fields[6] as int,
       details: fields[3] as bool,
       tagId: fields[4] as int,
       productivity: fields[5] as int,
+      info: fields[7] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Session obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.time)
       ..writeByte(1)
       ..write(obj.day)
       ..writeByte(2)
       ..write(obj.hour)
+      ..writeByte(6)
+      ..write(obj.minute)
       ..writeByte(3)
       ..write(obj.details)
       ..writeByte(4)
       ..write(obj.tagId)
       ..writeByte(5)
-      ..write(obj.productivity);
+      ..write(obj.productivity)
+      ..writeByte(7)
+      ..write(obj.info);
   }
 
   @override

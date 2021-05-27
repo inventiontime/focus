@@ -18,9 +18,11 @@ class Session {
       {this.time,
       this.day,
       this.hour,
+      this.minute = 0,
       this.details = false,
       this.tagId = -1,
-      this.productivity = -1});
+      this.productivity = -1,
+      this.info = ""});
 
   @HiveField(0)
   int time; // how long session was
@@ -28,12 +30,16 @@ class Session {
   int day; // day on which session was completed
   @HiveField(2)
   int hour;
+  @HiveField(6)
+  int minute;
   @HiveField(3)
   bool details; // set to true when tagId/productivity is set
   @HiveField(4)
   int tagId;
   @HiveField(5)
   int productivity;
+  @HiveField(7)
+  String info;
 }
 
 List<Tag> defaultTags = [

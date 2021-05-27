@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:focus/data.dart';
-import 'package:focus/data/appdata.dart';
 import 'package:focus/data/storage.dart';
 import 'package:focus/data/types.dart';
 import 'package:focus/enum.dart';
@@ -26,7 +25,10 @@ class MyApp extends StatelessWidget {
         children: [
           MaterialApp(
             title: 'Focus',
-            initialRoute: (Storage.storage.getPreference(Preference.helpRead) == 0 ? 'help' : 'dashboard'),
+            initialRoute:
+                (Storage.storage.getPreference(Preference.helpRead) == 0
+                    ? 'help'
+                    : 'dashboard'),
             routes: {
               'help': (context) => HomePage(HomePageType.help),
               'dashboard': (context) => HomePage(HomePageType.dashboard),

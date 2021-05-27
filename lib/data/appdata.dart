@@ -8,6 +8,11 @@ class AppData {
   List<Tag> get tags => Storage.storage.tagBox.values.toList();
   List<Session> get sessions => Storage.storage.sessionBox.values.toList();
 
+  String tagOfId(int tagId) => tags
+      .firstWhere((tag) => tag.id == tagId,
+          orElse: () => Tag(id: -1, name: '(deleted)'))
+      .name;
+
   int setNumber = 1;
 
   factory AppData() {

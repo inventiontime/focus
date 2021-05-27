@@ -5,8 +5,8 @@ import 'package:focus/widgets/components.dart';
 class StatsWidget extends StatelessWidget {
   @override
   StatsWidget({this.time, this.productivity});
-  int productivity;
-  int time;
+  final int productivity;
+  final int time;
 
   @override
   Widget build(BuildContext context) {

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:focus/data.dart';
-import 'package:focus/data/appdata.dart';
-import 'package:focus/modifiers.dart';
 
 class BackgroundBox extends StatelessWidget {
   @override
-  BackgroundBox({this.child});
+  BackgroundBox({this.child, Color color})
+      : this.color = (color == null ? backgroundColor3 : color);
   final Widget child;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: backgroundColor3,
+        color: color,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(child: child),
@@ -56,53 +56,5 @@ class SelectedBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: child);
-  }
-}
-
-class ChooseTag extends StatefulWidget {
-  ChooseTag({this.onSelected});
-  final void Function(int tagId) onSelected;
-
-  @override
-  _ChooseTagState createState() => _ChooseTagState();
-}
-
-class _ChooseTagState extends State<ChooseTag> {
-  int tagIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text('tags', style: Theme.of(context).textTheme.headline3),
-        SizedBox(height: 20),
-        Wrap(
-          spacing: 10,
-          runSpacing: 15,
-          children: List<Widget>.generate(
-            appData.tags.length,
-            (int index) {
-              return ChoiceChip(
-                selectedColor: orange,
-                label: Text(appData.tags[index].name),
-                labelStyle: Theme.of(context).textTheme.bodyText2,
-                padding: EdgeInsets.all(10),
-                selected: tagIndex == index,
-                onSelected: widget.onSelected == null
-                    ? null
-                    : (bool selected) {
-                        setState(() {
-                          tagIndex = index;
-                          widget.onSelected(appData.tags[tagIndex].id);
-                        });
-                      },
-              );
-            },
-          ).toList(),
-        ),
-      ],
-    ).scrollable();
   }
 }

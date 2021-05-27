@@ -4,9 +4,9 @@ import 'package:heatmap_calendar/heatmap_calendar.dart';
 
 class HeatmapWidget extends StatelessWidget {
   HeatmapWidget({this.input, this.colorThresholds, this.labelTextColor});
-  Map<DateTime, int> input;
-  Map<int, Color> colorThresholds;
-  Color labelTextColor;
+  final Map<DateTime, int> input;
+  final Map<int, Color> colorThresholds;
+  final Color labelTextColor;
 
   @override
   Widget build(BuildContext context) {

@@ -29,3 +29,7 @@ DateTime getDateFromDay(int day) {
 int hour() {
   return DateTime.now().hour;
 }
+
+int minute() {
+  return DateTime.now().minute;
+}

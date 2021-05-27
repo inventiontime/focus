@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:focus/data/appdata.dart';
 import 'package:focus/audio.dart';
 import 'package:focus/data.dart';
@@ -30,6 +29,9 @@ class _SettingsState extends State<Settings> {
                 style: Theme.of(context).textTheme.bodyText2,
                 autofocus: true,
                 autocorrect: false,
+                onSubmitted: (String text) {
+                  Navigator.pop(context, text);
+                },
                 decoration: new InputDecoration(
                     labelText: 'Name', hintText: 'Tag Name'),
               ),
@@ -193,7 +195,7 @@ class TagCard extends StatelessWidget {
         title: Text(appData.tags[index].name,
             style: Theme.of(context).textTheme.bodyText2),
         trailing: TextButton(
-            child: Icon(Icons.delete, color: blue),
+            child: Icon(Icons.delete_outlined, color: blue),
             onPressed: () {
               delete(index);
             }),

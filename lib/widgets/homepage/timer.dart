@@ -41,7 +41,6 @@ class _TimerState extends State<Timer> {
         else
           Storage.storage.addToPreference(Preference.breakTime, -1);
       }
-      print(appData.preferences[Preference.workTime.index]);
       if (appData.preferences[Preference.workTime.index] < 5)
         Storage.storage.setPreference(Preference.workTime, 5);
       if (appData.preferences[Preference.breakTime.index] < 1)

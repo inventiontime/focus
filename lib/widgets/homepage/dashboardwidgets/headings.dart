@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 class StatsHeading extends StatelessWidget {
   @override
   StatsHeading({this.name, this.child});
-  String name;
-  Widget child;
+  final String name;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

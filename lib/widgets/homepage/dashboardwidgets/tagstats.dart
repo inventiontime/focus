@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:focus/data/appdata.dart';
 import 'package:focus/functions.dart' as functions;
-import 'package:focus/widgets/components.dart';
 import 'package:focus/modifiers.dart';
 import 'package:focus/widgets/homepage/dashboardwidgets/headings.dart';
 import 'package:focus/widgets/homepage/dashboardwidgets/statswidget.dart';
+import 'package:focus/widgets/modulewidgets.dart';
 
 class TagStats extends StatefulWidget {
-  @override
-  TagStats(this.timeOffset);
-  final int timeOffset;
+  TagStats({Key key}) : super(key: key);
 
   @override
   _TagStatsState createState() => _TagStatsState();

@@ -6,7 +6,7 @@ import 'package:focus/data.dart';
 import 'package:focus/data/storage.dart';
 import 'package:focus/data/types.dart';
 import 'package:focus/enum.dart';
-import 'package:focus/widgets/components.dart';
+import 'package:focus/widgets/modulewidgets.dart';
 import 'package:focus/widgets/timerscreen/ring.dart';
 import 'package:focus/modifiers.dart';
 
@@ -17,8 +17,8 @@ class BreakTimer extends StatefulWidget {
 
 class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
   AnimationController controller;
-  double _currentSliderValue = 80;
-  int _value = 0;
+  int productivityValue = 80;
+  int _value = appData.tags[0].id;
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
   void onBreakComplete() {
     appData.setNumber++;
     if (_value != null)
-      Storage.storage.addSessionDetails(_value, _currentSliderValue.round());
+      Storage.storage.addSessionDetails(_value, productivityValue);
   }
 
   void popupFunction(TimerScreenOptions result) {
@@ -104,30 +104,23 @@ class _BreakTimerState extends State<BreakTimer> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('productivity',
-                      style: Theme.of(context).textTheme.headline3),
-                  SizedBox(height: 20),
-                  Slider(
-                    value: _currentSliderValue,
-                    min: 30,
-                    max: 100,
-                    divisions: 14,
-                    label: _currentSliderValue.round().toString(),
+                  ChooseProductivity(
                     onChanged: appData.sessions.last.details
                         ? null
-                        : (double value) {
+                        : (int value) {
                             setState(() {
-                              _currentSliderValue = value;
+                              productivityValue = value;
                             });
                           },
+                    startingValue: productivityValue,
                   ),
                   Divider(height: 50),
                   ChooseTag(
                     onSelected: appData.sessions.last.details
                         ? null
-                        : (int tagIndex) {
+                        : (int tagId) {
                             setState(() {
-                              _value = tagIndex;
+                              _value = tagId;
                             });
                           },
                   ),
